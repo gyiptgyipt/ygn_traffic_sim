@@ -60,7 +60,7 @@ detectionTime = 5
 speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'rickshaw':2, 'bike':2.5}  # average speeds of vehicles
 
 # Coordinates of vehicles' start
-x = {'right':[0,0,0], 'down':[320,360,306], 'left':[1400,1400,1400], 'up':[1030,1060,1000]}    
+x = {'right':[0,0,0], 'down':[320,360,306], 'left':[1400,1400,1400], 'up':[1030,1000,1060]}    
 y = {'right':[180,160,200], 'down':[0,0,0], 'left':[580,600,560], 'up':[800,800,800]}
 
 vehicles = {'right': {0:[], 1:[], 2:[], 'crossed':0}, 'down': {0:[], 1:[], 2:[], 'crossed':0}, 'left': {0:[], 1:[], 2:[], 'crossed':0}, 'up': {0:[], 1:[], 2:[], 'crossed':0}}
@@ -68,7 +68,7 @@ vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'rickshaw', 4:'bike'}
 directionNumbers = {0:'right', 1:'down', 2:'left', 3:'up'}
 
 # Coordinates of signal image, timer, and vehicle count
-signalCoods = [(530,230),(810,230),(810,570),(530,570)]
+signalCoods = [(420,150),(320,250),(940,530),(1020,420)]       # [right,top,left,bot]
 signalTimerCoods = [(530,210),(810,210),(810,550),(530,550)]
 vehicleCountCoods = [(480,210),(880,210),(880,550),(480,550)]
 vehicleCountTexts = ["0", "0", "0", "0"]
@@ -79,7 +79,7 @@ stopLines = {'right': 300, 'down': 150, 'left': 1100, 'up': 620}
 defaultStop = {'right': 290, 'down': 140, 'left': 1110, 'up': 630}
 stops = {'right': [580,580,580], 'down': [320,320,320], 'left': [810,810,810], 'up': [545,545,545]}
 
-mid = {'right': {'x':220, 'y':640}, 'down': {'x':350, 'y':600}, 'left': {'x':1080, 'y':306}, 'up': {'x':560, 'y':200}}  # turning points 
+mid = {'right': {'x':220, 'y':640}, 'down': {'x':350, 'y':600}, 'left': {'x':1150, 'y':306}, 'up': {'x':560, 'y':200}}  # turning points 
 rotationAngle = 3
 
 # Gap between vehicles
