@@ -69,13 +69,20 @@ directionNumbers = {0:'right', 1:'down', 2:'left', 3:'up'}
 
 # Coordinates of signal image, timer, and vehicle count
 signalCoods = [(420,150),(320,250),(940,530),(1020,420)]       # [right,top,left,bot]
-signalTimerCoods = [(530,210),(810,210),(810,550),(530,550)]
-vehicleCountCoods = [(480,210),(880,210),(880,550),(480,550)]
+# signalTimerCoods = [(530,210),(810,210),(810,550),(530,550)]
+# vehicleCountCoods = [(480,210),(880,210),(880,550),(480,550)]
+
+signalTimerCoods = [(490,150), (390,250), (1100,530), (1090,420)]   # adjust 
+vehicleCountCoods = [(460,150), (360,250), (980,530), (1060,420)]
+
 vehicleCountTexts = ["0", "0", "0", "0"]
 
 # Coordinates of stop lines
 # Coordinates of stop lines
 stopLines = {'right': 300, 'down': 150, 'left': 1100, 'up': 620}
+
+vehicleCountLine = {'right': 0, 'down': 0, 'left': 1400, 'up': 800}  # coordinate for counting vehicles
+
 defaultStop = {'right': 290, 'down': 140, 'left': 1110, 'up': 630}
 stops = {'right': [580,580,580], 'down': [320,320,320], 'left': [810,810,810], 'up': [545,545,545]}
 
