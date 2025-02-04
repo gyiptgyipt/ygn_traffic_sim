@@ -169,8 +169,10 @@ class Vehicle(pygame.sprite.Sprite):
     def move(self):
         if(self.direction=='right'):
             if(self.crossed==0 and self.x+self.currentImage.get_rect().width>stopLines[self.direction]):   # if the image has crossed stop line now
+            #vehicles = {'right': {0:[], 1:[], 2:[], 'crossed':0}, 'down': {0:[], 1:[], 2:[], 'crossed':0}, 'left': {0:[], 1:[], 2:[], 'crossed':0}, 'up': {0:[], 1:[], 2:[], 'crossed':0}}
+
                 self.crossed = 1
-                vehicles[self.direction]['crossed'] += 1
+                # vehicles[self.direction]['crossed'] += 1
             if(self.willTurn==1):
                 if(self.crossed==0 or self.x+self.currentImage.get_rect().width<mid[self.direction]['x']):
                     if((self.x+self.currentImage.get_rect().width<=self.stop or (currentGreen==0 and currentYellow==0) or self.crossed==1) and (self.index==0 or self.x+self.currentImage.get_rect().width<(vehicles[self.direction][self.lane][self.index-1].x - gap2) or vehicles[self.direction][self.lane][self.index-1].turned==1)):                
@@ -200,7 +202,7 @@ class Vehicle(pygame.sprite.Sprite):
         elif(self.direction=='down'):
             if(self.crossed==0 and self.y+self.currentImage.get_rect().height>stopLines[self.direction]):
                 self.crossed = 1
-                vehicles[self.direction]['crossed'] += 1
+                # vehicles[self.direction]['crossed'] += 1
             if(self.willTurn==1):
                 if(self.crossed==0 or self.y+self.currentImage.get_rect().height<mid[self.direction]['y']):
                     if((self.y+self.currentImage.get_rect().height<=self.stop or (currentGreen==1 and currentYellow==0) or self.crossed==1) and (self.index==0 or self.y+self.currentImage.get_rect().height<(vehicles[self.direction][self.lane][self.index-1].y - gap2) or vehicles[self.direction][self.lane][self.index-1].turned==1)):                
@@ -223,7 +225,7 @@ class Vehicle(pygame.sprite.Sprite):
         elif(self.direction=='left'):
             if(self.crossed==0 and self.x<stopLines[self.direction]):
                 self.crossed = 1
-                vehicles[self.direction]['crossed'] += 1
+                # vehicles[self.direction]['crossed'] += 1
             if(self.willTurn==1):
                 if(self.crossed==0 or self.x>mid[self.direction]['x']):
                     if((self.x>=self.stop or (currentGreen==2 and currentYellow==0) or self.crossed==1) and (self.index==0 or self.x>(vehicles[self.direction][self.lane][self.index-1].x + vehicles[self.direction][self.lane][self.index-1].currentImage.get_rect().width + gap2) or vehicles[self.direction][self.lane][self.index-1].turned==1)):                
@@ -252,7 +254,7 @@ class Vehicle(pygame.sprite.Sprite):
         elif(self.direction=='up'):
             if(self.crossed==0 and self.y<stopLines[self.direction]):
                 self.crossed = 1
-                vehicles[self.direction]['crossed'] += 1
+                # vehicles[self.direction]['crossed'] += 1
             if(self.willTurn==1):
                 if(self.crossed==0 or self.y>mid[self.direction]['y']):
                     if((self.y>=self.stop or (currentGreen==3 and currentYellow==0) or self.crossed == 1) and (self.index==0 or self.y>(vehicles[self.direction][self.lane][self.index-1].y + vehicles[self.direction][self.lane][self.index-1].currentImage.get_rect().height +  gap2) or vehicles[self.direction][self.lane][self.index-1].turned==1)):
@@ -390,32 +392,44 @@ def updateValues():
 
 # Generating vehicles in the simulation
 def generateVehicles():
-    while(True):
-        vehicle_type = random.randint(0,4)
-        if(vehicle_type==4):
+    global vehicles  # Use the global dictionary
+
+    while True:
+        vehicle_type = random.randint(0, 4)
+
+        # Determine lane number
+        if vehicle_type == 4:
             lane_number = 0
         else:
-            lane_number = random.randint(0,1) + 1
+            lane_number = random.randint(0, 1) + 1  # Lane 1 or 2
+
         will_turn = 0
-        if(lane_number==2):
-            temp = random.randint(0,4)
-            if(temp<=2):
-                will_turn = 1
-            elif(temp>2):
-                will_turn = 0
-        temp = random.randint(0,999)
+        if lane_number == 2:
+            temp = random.randint(0, 4)
+            will_turn = 1 if temp <= 2 else 0  # 60% chance of turning
+
+        # Determine direction
+        temp = random.randint(0, 999)
         direction_number = 0
-        a = [400,800,900,1000]
-        if(temp<a[0]):
+        a = [400, 800, 900, 1000]  # Probability split for directions
+        if temp < a[0]:
             direction_number = 0
-        elif(temp<a[1]):
+        elif temp < a[1]:
             direction_number = 1
-        elif(temp<a[2]):
+        elif temp < a[2]:
             direction_number = 2
-        elif(temp<a[3]):
+        elif temp < a[3]:
             direction_number = 3
-        Vehicle(lane_number, vehicleTypes[vehicle_type], direction_number, directionNumbers[direction_number], will_turn)
-        time.sleep(0.75)
+
+        direction_name = directionNumbers[direction_number]  # Convert to direction name
+
+        # Create vehicle object and add to vehicles dictionary
+        new_vehicle = Vehicle(lane_number, vehicleTypes[vehicle_type], direction_number, direction_name, will_turn)
+        vehicles[direction_name][lane_number].append(new_vehicle)
+
+        # Count vehicle as 'crossed' when it enters the simulation
+        vehicles[direction_name]['crossed'] += 1 
+        time.sleep(1.0)
 
 def simulationTime():
     global timeElapsed, simTime
