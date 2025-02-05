@@ -353,6 +353,10 @@ def repeat():
         for vehicle in vehicles[directionNumbers[currentGreen]][i]:
             vehicle.stop = defaultStop[directionNumbers[currentGreen]]
 
+    # Reset the 'crossed' status of vehicles for the current direction during yellow light
+    direction_name = directionNumbers[currentGreen]  # Convert currentGreen to direction name
+    vehicles[direction_name]['crossed'] = 0  # Reset the crossed status
+
     while signals[currentGreen].yellow > 0:  # while the timer of current yellow signal is not zero
         printStatus()
         updateValues()
@@ -364,10 +368,6 @@ def repeat():
     signals[currentGreen].green = defaultGreen
     signals[currentGreen].yellow = defaultYellow
     signals[currentGreen].red = defaultRed
-
-    # Reset the 'crossed' status of vehicles for the current direction
-    direction_name = directionNumbers[currentGreen]  # Convert currentGreen to direction name
-    vehicles[direction_name]['crossed'] = 0  # Reset the crossed status
 
     currentGreen = nextGreen  # set next signal as green signal
     nextGreen = (currentGreen + 1) % noOfSignals  # set next green signal
