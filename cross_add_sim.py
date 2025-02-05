@@ -334,37 +334,45 @@ def setTime():
    
 def repeat():
     global currentGreen, currentYellow, nextGreen
-    while(signals[currentGreen].green>0):   # while the timer of current green signal is not zero
+    while signals[currentGreen].green > 0:  # while the timer of current green signal is not zero
         printStatus()
         updateValues()
-        if(signals[(currentGreen+1)%(noOfSignals)].red==detectionTime):    # set time of next green signal 
-            thread = threading.Thread(name="detection",target=setTime, args=())
+        if signals[(currentGreen + 1) % noOfSignals].red == detectionTime:  # set time of next green signal
+            thread = threading.Thread(name="detection", target=setTime, args=())
             thread.daemon = True
             thread.start()
             # setTime()
         time.sleep(1)
-    currentYellow = 1   # set yellow signal on
+
+    currentYellow = 1  # set yellow signal on
     vehicleCountTexts[currentGreen] = "0"
-    # reset stop coordinates of lanes and vehicles 
-    for i in range(0,3):
+
+    # Reset stop coordinates of lanes and vehicles
+    for i in range(0, 3):
         stops[directionNumbers[currentGreen]][i] = defaultStop[directionNumbers[currentGreen]]
         for vehicle in vehicles[directionNumbers[currentGreen]][i]:
             vehicle.stop = defaultStop[directionNumbers[currentGreen]]
-    while(signals[currentGreen].yellow>0):  # while the timer of current yellow signal is not zero
+
+    while signals[currentGreen].yellow > 0:  # while the timer of current yellow signal is not zero
         printStatus()
         updateValues()
         time.sleep(1)
-    currentYellow = 0   # set yellow signal off
-    
-    # reset all signal times of current signal to default times
+
+    currentYellow = 0  # set yellow signal off
+
+    # Reset all signal times of current signal to default times
     signals[currentGreen].green = defaultGreen
     signals[currentGreen].yellow = defaultYellow
     signals[currentGreen].red = defaultRed
-       
-    currentGreen = nextGreen # set next signal as green signal
-    nextGreen = (currentGreen+1)%noOfSignals    # set next green signal
-    signals[nextGreen].red = signals[currentGreen].yellow+signals[currentGreen].green    # set the red time of next to next signal as (yellow time + green time) of next signal
-    repeat()     
+
+    # Reset the 'crossed' status of vehicles for the current direction
+    direction_name = directionNumbers[currentGreen]  # Convert currentGreen to direction name
+    vehicles[direction_name]['crossed'] = 0  # Reset the crossed status
+
+    currentGreen = nextGreen  # set next signal as green signal
+    nextGreen = (currentGreen + 1) % noOfSignals  # set next green signal
+    signals[nextGreen].red = signals[currentGreen].yellow + signals[currentGreen].green  # set the red time of next to next signal as (yellow time + green time) of next signal
+    repeat()
 
 # Print the signal timers on cmd
 def printStatus():                                                                                           
@@ -389,6 +397,10 @@ def updateValues():
                 signals[i].yellow-=1
         else:
             signals[i].red-=1
+
+
+
+
 
 # Generating vehicles in the simulation
 def generateVehicles():
@@ -422,6 +434,7 @@ def generateVehicles():
             direction_number = 3
 
         direction_name = directionNumbers[direction_number]  # Convert to direction name
+        #vehicles[direction_name]['crossed'] += 1 
 
         # Create vehicle object and add to vehicles dictionary
         new_vehicle = Vehicle(lane_number, vehicleTypes[vehicle_type], direction_number, direction_name, will_turn)
